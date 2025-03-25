@@ -1,0 +1,8 @@
+[project]
+name = "llm-code-executor"
+version = "0.1.0"
+requires-python = ">={{pythonVersion}}"
+dependencies = [
+{{#each dependencies}}"{{.}}"{{#unless @last}},{{/unless}}
+{{/each}}
+]
