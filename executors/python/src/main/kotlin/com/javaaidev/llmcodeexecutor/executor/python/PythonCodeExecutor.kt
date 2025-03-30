@@ -2,16 +2,24 @@ package com.javaaidev.llmcodeexecutor.executor.python
 
 import com.javaaidev.llmcodeexecutor.core.*
 import java.nio.file.Files
+import java.time.Duration
+
+data class PythonCodeExecutorConfig(
+    val containerImage: String? = null,
+)
 
 object PythonCodeExecutor {
 
-    fun execute(request: CodeExecutionRequest): CodeExecutionResponse {
+    fun execute(
+        request: CodeExecutionRequest,
+        config: PythonCodeExecutorConfig? = null
+    ): CodeExecutionResponse {
         val codeDir = Files.createTempDirectory("code_executor")
         val codeFile = "app.py"
         Files.writeString(codeDir.resolve(codeFile), request.code)
         val codeExecutor = LLMCodeExecutor(
             CodeExecutorConfig(
-                "python-executor",
+                config?.containerImage ?: "ghcr.io/javaaidev/llm-code-executor-python:base-3.12",
                 listOf("uv", "run", codeFile),
                 listOf("/app/.venv"),
                 listOf(
@@ -21,10 +29,18 @@ object PythonCodeExecutor {
                     )
                 ),
                 "/app",
-                containerOutputDirectory = "/app",
+                Duration.ofMinutes(3),
+                "/app",
             )
         )
-        return codeExecutor.execute(request)
+        return codeExecutor.execute(
+            request.copy(
+                outputFileCollectionConfig = request.outputFileCollectionConfig?.copy(
+                    includedFilePattern = request.outputFileCollectionConfig?.includedFilePattern
+                        ?: "!${codeFile}"
+                )
+            )
+        )
     }
 }
 
