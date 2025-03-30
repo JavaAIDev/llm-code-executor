@@ -7,11 +7,12 @@ object PythonCodeExecutor {
 
     fun execute(request: CodeExecutionRequest): CodeExecutionResponse {
         val codeDir = Files.createTempDirectory("code_executor")
-        Files.writeString(codeDir.resolve("app.py"), request.code)
+        val codeFile = "app.py"
+        Files.writeString(codeDir.resolve(codeFile), request.code)
         val codeExecutor = LLMCodeExecutor(
             CodeExecutorConfig(
                 "python-executor",
-                listOf("uv", "run", "app.py"),
+                listOf("uv", "run", codeFile),
                 listOf("/app/.venv"),
                 listOf(
                     VolumeBind(
