@@ -6,6 +6,7 @@ import com.github.dockerjava.api.model.*
 import com.github.dockerjava.core.DefaultDockerClientConfig
 import com.github.dockerjava.core.DockerClientImpl
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient
+import org.slf4j.LoggerFactory
 import java.io.Closeable
 import java.nio.file.Files
 import java.nio.file.Path
@@ -61,6 +62,7 @@ data class CodeExecutionResponse(
 )
 
 class LLMCodeExecutor(private val config: CodeExecutorConfig) {
+    private val logger = LoggerFactory.getLogger(LLMCodeExecutor::class.java)
     private val dockerClientConfig = DefaultDockerClientConfig.createDefaultConfigBuilder().build()
     private val httpClient = ApacheDockerHttpClient.Builder()
         .dockerHost(dockerClientConfig.dockerHost)
@@ -72,6 +74,33 @@ class LLMCodeExecutor(private val config: CodeExecutorConfig) {
     private val dockerClient = DockerClientImpl.getInstance(dockerClientConfig, httpClient)
 
     fun execute(request: CodeExecutionRequest): CodeExecutionResponse {
+        val pullImageCountDownLatch = CountDownLatch(1)
+        dockerClient.pullImageCmd(config.containerImage)
+            .exec(object : ResultCallback<PullResponseItem> {
+                override fun close() {
+
+                }
+
+                override fun onStart(closeable: Closeable?) {
+
+                }
+
+                override fun onError(throwable: Throwable?) {
+                    logger.error("Failed to pull image", throwable)
+                }
+
+                override fun onComplete() {
+                    pullImageCountDownLatch.countDown()
+                }
+
+                override fun onNext(`object`: PullResponseItem?) {
+
+                }
+
+            })
+        pullImageCountDownLatch.await(1, TimeUnit.MINUTES)
+        logger.info("Image pulled successfully")
+
         val cmd = dockerClient.createContainerCmd(config.containerImage)
         config.volumes?.let { volumes ->
             cmd.withVolumes(volumes.map { Volume(it) })
