@@ -13,6 +13,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>python</module>
+    <module>java</module>
   </modules>
 
   <properties>

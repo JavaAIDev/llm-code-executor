@@ -1,12 +1,10 @@
 package com.javaaidev.llmcodeexecutor.executor.python
 
 import com.javaaidev.llmcodeexecutor.core.CodeExecutionRequest
-import com.javaaidev.llmcodeexecutor.core.Manual
 import com.javaaidev.llmcodeexecutor.core.OutputFileCollectionConfig
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-@Manual
 class PythonCodeExecutorTest {
     @Test
     fun basic() {

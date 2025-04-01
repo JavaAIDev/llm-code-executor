@@ -1,5 +1,6 @@
 package com.javaaidev.llmcodeexecutor.containerimagegenerator
 
+import com.javaaidev.llmcodeexecutor.containerimagegenerator.java.JavaContainerImageGeneratorCommand
 import com.javaaidev.llmcodeexecutor.containerimagegenerator.python.PythonContainerImageGeneratorCommand
 import picocli.CommandLine
 import picocli.CommandLine.Command
@@ -27,6 +28,7 @@ class ReusableOptions {
     scope = CommandLine.ScopeType.INHERIT,
     subcommands = [
         PythonContainerImageGeneratorCommand::class,
+        JavaContainerImageGeneratorCommand::class,
     ],
 )
 class ContainerImageGeneratorCli

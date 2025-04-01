@@ -1,0 +1,25 @@
+{
+  "javaVersion": "21",
+  "dependencies": [
+    {
+      "groupId": "com.google.guava",
+      "artifactId": "guava",
+      "artifactVersion": "33.4.6-jre"
+    },
+    {
+      "groupId": "org.apache.commons",
+      "artifactId": "commons-lang3",
+      "artifactVersion": "3.17.0"
+    },
+    {
+      "groupId": "com.fasterxml.jackson.core",
+      "artifactId": "jackson-databind",
+      "artifactVersion": "2.18.3"
+    },
+    {
+      "groupId": "com.squareup.okhttp3",
+      "artifactId": "okhttp",
+      "artifactVersion": "4.12.0"
+    }
+  ]
+}

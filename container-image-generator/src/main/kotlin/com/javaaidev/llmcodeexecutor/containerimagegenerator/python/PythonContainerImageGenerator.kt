@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.github.jknack.handlebars.EscapingStrategy
 import com.github.jknack.handlebars.Handlebars
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader
+import com.javaaidev.llmcodeexecutor.containerimagegenerator.GeneratedFile
 import com.javaaidev.llmcodeexecutor.containerimagegenerator.ReusableOptions
 import org.slf4j.LoggerFactory
 import picocli.CommandLine
@@ -12,15 +13,7 @@ import picocli.CommandLine.Command
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.Callable
-import java.util.function.Supplier
 import kotlin.io.path.exists
-
-data class GeneratedFile(
-    val templateName: String,
-    val dir: Path,
-    val overwrite: Boolean = true,
-    val fileNameSupplier: Supplier<String>,
-)
 
 object PythonContainerImageGenerator {
     private val handlebars: Handlebars
