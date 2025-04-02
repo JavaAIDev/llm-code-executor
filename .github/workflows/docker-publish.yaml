@@ -21,6 +21,8 @@ jobs:
         profile:
           - language: python
             version: base-3.12
+          - language: java
+            version: base-21
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
