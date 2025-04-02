@@ -79,7 +79,7 @@ class LLMCodeExecutor(
         .connectionTimeout(Duration.ofSeconds(30))
         .responseTimeout(Duration.ofSeconds(45))
         .build()
-    private val dockerClient = DockerClientImpl.getInstance(customDockerClientConfig, httpClient)
+    private val dockerClient = DockerClientImpl.getInstance(dockerClientConfig, httpClient)
 
     fun execute(request: CodeExecutionRequest): CodeExecutionResponse {
         pullImage()
@@ -101,8 +101,9 @@ class LLMCodeExecutor(
             cmd.withWorkingDir(it)
         }
         val containerId = cmd.exec().id
+        logger.info("Created container {}", containerId)
         dockerClient.startContainerCmd(containerId).exec()
-
+        logger.info("Started container {}", containerId)
         val outputBuilder = StringBuffer()
         val errorBuilder = StringBuffer()
         val countDownLatch = CountDownLatch(1)
@@ -147,6 +148,7 @@ class LLMCodeExecutor(
             (config.executionTimeout ?: Duration.ofMinutes(1)).toSeconds(),
             TimeUnit.SECONDS
         )
+        logger.info("Container finished execution {}", containerId)
         try {
             dockerClient.stopContainerCmd(containerId).exec()
         } catch (e: NotModifiedException) {
@@ -198,6 +200,7 @@ class LLMCodeExecutor(
         }
 
         dockerClient.removeContainerCmd(containerId).exec()
+        logger.info("Container removed {}", containerId)
         return CodeExecutionResponse(
             outputBuilder.toString(),
             errorBuilder.toString(),
@@ -207,6 +210,7 @@ class LLMCodeExecutor(
     }
 
     private fun pullImage() {
+        logger.info("Start pulling image {}", config.containerImage)
         val pullImageCountDownLatch = CountDownLatch(1)
         dockerClient.pullImageCmd(config.containerImage)
             .exec(object : ResultCallback<PullResponseItem> {
