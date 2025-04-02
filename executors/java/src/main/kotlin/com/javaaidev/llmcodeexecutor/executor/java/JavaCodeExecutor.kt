@@ -43,23 +43,3 @@ object JavaCodeExecutor {
         )
     }
 }
-
-fun main() {
-    println(
-        JavaCodeExecutor.execute(
-            CodeExecutionRequest(
-                """
-        public class Main {
-            public static void main(String[] args) {
-                System.out.println("hello");
-            }
-        }
-    """.trimIndent(),
-                OutputFileCollectionConfig(
-                    copyFiles = true,
-                    copiedFilesPath = "./target"
-                )
-            )
-        )
-    )
-}

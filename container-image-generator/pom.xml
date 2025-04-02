@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>container-image-generator</artifactId>
+  <name>LLM Code Executor :: Container Image Generator</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

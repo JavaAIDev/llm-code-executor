@@ -6,6 +6,7 @@
 
   <groupId>com.javaaidev.llmcodeexecutor</groupId>
   <artifactId>parent</artifactId>
+  <name>LLM Code Executor</name>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
