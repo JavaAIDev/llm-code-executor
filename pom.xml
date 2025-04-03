@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.javaaidev.llmcodeexecutor</groupId>
-  <artifactId>parent</artifactId>
+  <artifactId>llm-code-executor</artifactId>
   <name>LLM Code Executor</name>
   <description>Execute code for LLM</description>
   <version>0.1.0</version>
