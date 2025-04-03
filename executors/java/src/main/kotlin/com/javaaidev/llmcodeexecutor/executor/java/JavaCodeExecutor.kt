@@ -8,11 +8,10 @@ data class JavaCodeExecutorConfig(
     val containerImage: String? = null,
 )
 
-object JavaCodeExecutor {
+class JavaCodeExecutor(private val config: JavaCodeExecutorConfig? = null) {
 
     fun execute(
-        request: CodeExecutionRequest,
-        config: JavaCodeExecutorConfig? = null
+        request: CodeExecutionRequest
     ): CodeExecutionResponse {
         val codeDir = Files.createTempDirectory("code_executor")
         val codeFile = "Main.java"

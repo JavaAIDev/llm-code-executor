@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 class PythonCodeExecutorTest {
     @Test
     fun basic() {
-        val result = PythonCodeExecutor.execute(
+        val result = PythonCodeExecutor().execute(
             CodeExecutionRequest(
                 """
         print("Hello")
@@ -20,7 +20,7 @@ class PythonCodeExecutorTest {
 
     @Test
     fun collectFiles() {
-        val result = PythonCodeExecutor.execute(
+        val result = PythonCodeExecutor().execute(
             CodeExecutionRequest(
                 """
         import numpy as np

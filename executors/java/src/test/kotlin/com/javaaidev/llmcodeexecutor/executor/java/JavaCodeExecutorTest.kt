@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 class JavaCodeExecutorTest {
     @Test
     fun basic() {
-        val result = JavaCodeExecutor.execute(
+        val result = JavaCodeExecutor().execute(
             CodeExecutionRequest(
                 """
         public class Main {
