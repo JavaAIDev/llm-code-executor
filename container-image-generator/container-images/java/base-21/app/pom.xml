@@ -6,7 +6,7 @@
 
   <groupId>com.javaaidev.llmcodeexecutor</groupId>
   <artifactId>generate-app</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
 
   <properties>
     <java.version>21</java.version>
@@ -56,9 +56,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <mainClass>Main</mainClass>
-        </configuration>
       </plugin>
     </plugins>
   </build>

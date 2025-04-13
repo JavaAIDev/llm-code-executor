@@ -23,7 +23,7 @@ class ReusableOptions {
 @Command(
     name = "llm-code-executor",
     mixinStandardHelpOptions = true,
-    version = ["0.1.0"],
+    version = ["0.2.0"],
     description = ["Generate container image for LLM code execution"],
     scope = CommandLine.ScopeType.INHERIT,
     subcommands = [

@@ -1,7 +1,7 @@
 package com.javaaidev.llmcodeexecutor.executor.python
 
-import com.javaaidev.llmcodeexecutor.core.CodeExecutionRequest
-import com.javaaidev.llmcodeexecutor.core.OutputFileCollectionConfig
+import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeParameters
+import com.javaaidev.llmcodeexecutor.executor.model.OutputFileCollectionConfig
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -9,7 +9,7 @@ class PythonCodeExecutorTest {
     @Test
     fun basic() {
         val result = PythonCodeExecutor().execute(
-            CodeExecutionRequest(
+            ExecuteCodeParameters(
                 """
         print("Hello")
     """.trimIndent()
@@ -21,7 +21,7 @@ class PythonCodeExecutorTest {
     @Test
     fun collectFiles() {
         val result = PythonCodeExecutor().execute(
-            CodeExecutionRequest(
+            ExecuteCodeParameters(
                 """
         import numpy as np
         import matplotlib.pyplot as plt
@@ -32,10 +32,12 @@ class PythonCodeExecutorTest {
         print('Scatter plot saved to scatter.png')
         
     """.trimIndent(),
+                null,
                 OutputFileCollectionConfig(
-                    copyFiles = true,
-                    copiedFilesPath = "./target",
-                    includedFilePattern = "*.png"
+                    false,
+                    true,
+                    "./target",
+                    "*.png"
                 )
             )
         )

@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.javaaidev.llmcodeexecutor</groupId>
     <artifactId>llm-code-executor</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
   </parent>
 
   <artifactId>core</artifactId>
@@ -35,6 +35,11 @@
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>com.javaaidev.llmcodeexecutor</groupId>
+      <artifactId>code-executor-model</artifactId>
+      <version>0.2.0</version>
+    </dependency>
     <dependency>
       <groupId>com.github.docker-java</groupId>
       <artifactId>docker-java-core</artifactId>

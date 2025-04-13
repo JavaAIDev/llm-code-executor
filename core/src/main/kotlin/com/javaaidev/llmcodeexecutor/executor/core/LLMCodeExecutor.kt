@@ -1,4 +1,4 @@
-package com.javaaidev.llmcodeexecutor.core
+package com.javaaidev.llmcodeexecutor.executor.core
 
 import com.github.dockerjava.api.async.ResultCallback
 import com.github.dockerjava.api.exception.NotModifiedException
@@ -7,6 +7,10 @@ import com.github.dockerjava.core.DefaultDockerClientConfig
 import com.github.dockerjava.core.DockerClientConfig
 import com.github.dockerjava.core.DockerClientImpl
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient
+import com.javaaidev.llmcodeexecutor.executor.model.CopiedFile
+import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeParameters
+import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeReturnType
+import com.javaaidev.llmcodeexecutor.executor.model.LoadedFile
 import org.slf4j.LoggerFactory
 import java.io.Closeable
 import java.nio.file.Files
@@ -34,33 +38,14 @@ data class CodeExecutorConfig(
     val containerOutputDirectory: String? = null,
 )
 
-data class CodeExecutionRequest(
-    val code: String,
-    val outputFileCollectionConfig: OutputFileCollectionConfig? = null,
-)
+fun ExecuteCodeParameters.withDefaultIncludedFilePattern(includedFilePattern: String?) {
+    this.outputFileCollectionConfig?.let { config ->
+        if (config.includedFilePattern == null) {
+            config.includedFilePattern = includedFilePattern
+        }
+    }
+}
 
-data class OutputFileCollectionConfig(
-    val loadFiles: Boolean? = false,
-    val copyFiles: Boolean? = false,
-    val copiedFilesPath: String? = null,
-    val includedFilePattern: String? = null,
-)
-
-data class OutputFileContent(
-    val mimeType: String,
-    val data: String,
-)
-
-data class CopiedFile(
-    val path: String,
-)
-
-data class CodeExecutionResponse(
-    val output: String,
-    val error: String? = null,
-    val loadedFiles: List<OutputFileContent>? = null,
-    val copiedFiles: List<CopiedFile>? = null,
-)
 
 /**
  * Execute code for LLM
@@ -81,9 +66,13 @@ class LLMCodeExecutor(
         .build()
     private val dockerClient = DockerClientImpl.getInstance(dockerClientConfig, httpClient)
 
-    fun execute(request: CodeExecutionRequest): CodeExecutionResponse {
-        pullImage()
+    init {
+        logger.info("Use docker client connecting to {}", dockerClientConfig.dockerHost)
+    }
 
+    fun execute(request: ExecuteCodeParameters): ExecuteCodeReturnType {
+        logger.info("Starting to run code: {}", request)
+        pullImage()
         val cmd = dockerClient.createContainerCmd(config.containerImage)
         config.volumes?.let { volumes ->
             cmd.withVolumes(volumes.map { Volume(it) })
@@ -155,7 +144,7 @@ class LLMCodeExecutor(
             // ignore
         }
         val copiedFiles = mutableListOf<CopiedFile>()
-        val loadedFiles = mutableListOf<OutputFileContent>()
+        val loadedFiles = mutableListOf<LoadedFile>()
         request.outputFileCollectionConfig?.let { collectionConfig ->
             if (config.containerOutputDirectory != null && (collectionConfig.loadFiles == true || collectionConfig.copyFiles == true)) {
                 val response = dockerClient.inspectContainerCmd(containerId).exec()
@@ -179,14 +168,14 @@ class LLMCodeExecutor(
                                 val mimeType = Files.probeContentType(path)
                                 if (mimeType.startsWith("text/")) {
                                     loadedFiles.add(
-                                        OutputFileContent(
+                                        LoadedFile(
                                             mimeType,
                                             Files.readString(path)
                                         )
                                     )
                                 } else {
                                     loadedFiles.add(
-                                        OutputFileContent(
+                                        LoadedFile(
                                             mimeType,
                                             Base64.getMimeEncoder()
                                                 .encodeToString(Files.readAllBytes(path))
@@ -201,15 +190,21 @@ class LLMCodeExecutor(
 
         dockerClient.removeContainerCmd(containerId).exec()
         logger.info("Container removed {}", containerId)
-        return CodeExecutionResponse(
+        return ExecuteCodeReturnType(
             outputBuilder.toString(),
             errorBuilder.toString(),
             loadedFiles,
             copiedFiles
-        )
+        ).also { logger.info("Code execution result: {}", it) }
     }
 
     private fun pullImage() {
+        val existingImages =
+            dockerClient.listImagesCmd().withReferenceFilter(config.containerImage).exec()
+        if (existingImages.isNotEmpty()) {
+            logger.info("Image exists, skip pulling")
+            return
+        }
         logger.info("Start pulling image {}", config.containerImage)
         val pullImageCountDownLatch = CountDownLatch(1)
         dockerClient.pullImageCmd(config.containerImage)

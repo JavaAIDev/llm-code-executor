@@ -1,13 +1,13 @@
 package com.javaaidev.llmcodeexecutor.executor.java
 
-import com.javaaidev.llmcodeexecutor.core.CodeExecutionRequest
+import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeParameters
 import org.junit.jupiter.api.Test
 
 class JavaCodeExecutorTest {
     @Test
     fun basic() {
         val result = JavaCodeExecutor().execute(
-            CodeExecutionRequest(
+            ExecuteCodeParameters(
                 """
         public class Main {
             public static void main(String[] args) {

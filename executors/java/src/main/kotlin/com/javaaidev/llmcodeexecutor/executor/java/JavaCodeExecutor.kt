@@ -1,25 +1,34 @@
 package com.javaaidev.llmcodeexecutor.executor.java
 
-import com.javaaidev.llmcodeexecutor.core.*
+import com.javaaidev.llmcodeexecutor.executor.core.CodeExecutorConfig
+import com.javaaidev.llmcodeexecutor.executor.core.LLMCodeExecutor
+import com.javaaidev.llmcodeexecutor.executor.core.VolumeBind
+import com.javaaidev.llmcodeexecutor.executor.core.withDefaultIncludedFilePattern
+import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeConfiguration
+import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeParameters
+import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeReturnType
 import java.nio.file.Files
 import java.time.Duration
 
-data class JavaCodeExecutorConfig(
-    val containerImage: String? = null,
-)
-
-class JavaCodeExecutor(private val config: JavaCodeExecutorConfig? = null) {
+class JavaCodeExecutor(private val config: ExecuteCodeConfiguration? = null) {
 
     fun execute(
-        request: CodeExecutionRequest
-    ): CodeExecutionResponse {
+        request: ExecuteCodeParameters
+    ): ExecuteCodeReturnType {
         val codeDir = Files.createTempDirectory("code_executor")
-        val codeFile = "Main.java"
+        val codeFile = (request.codeFileName ?: "").ifBlank { "Main.java" }
+        val mainClass = codeFile.removeSuffix(".java")
         Files.writeString(codeDir.resolve(codeFile), request.code)
         val codeExecutor = LLMCodeExecutor(
             CodeExecutorConfig(
                 config?.containerImage ?: "ghcr.io/javaaidev/llm-code-executor-java:base-21",
-                listOf("mvn", "-q", "compile", "exec:java"),
+                listOf(
+                    "mvn",
+                    "-q",
+                    "compile",
+                    "-Dexec.mainClass=${mainClass}",
+                    "exec:java"
+                ),
                 listOf(),
                 listOf(
                     VolumeBind(
@@ -32,13 +41,7 @@ class JavaCodeExecutor(private val config: JavaCodeExecutorConfig? = null) {
                 "/app",
             )
         )
-        return codeExecutor.execute(
-            request.copy(
-                outputFileCollectionConfig = request.outputFileCollectionConfig?.copy(
-                    includedFilePattern = request.outputFileCollectionConfig?.includedFilePattern
-                        ?: "!${codeFile}"
-                )
-            )
-        )
+        request.withDefaultIncludedFilePattern("!${codeFile}")
+        return codeExecutor.execute(request)
     }
 }

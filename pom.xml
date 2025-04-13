@@ -8,7 +8,7 @@
   <artifactId>llm-code-executor</artifactId>
   <name>LLM Code Executor</name>
   <description>Execute code for LLM</description>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <packaging>pom</packaging>
 
   <url>https://github.com/JavaAIDev/llm-code-executor</url>
@@ -40,6 +40,8 @@
     <module>core</module>
     <module>executors</module>
     <module>container-image-generator</module>
+    <module>tools</module>
+    <module>executor-model</module>
   </modules>
 
   <properties>
@@ -98,8 +100,35 @@
             <execution>
               <phase>package</phase>
               <goals>
-                <goal>javadocJar</goal>
+                <goal>dokka</goal>
               </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <jdkVersion>${java.version}</jdkVersion>
+            <pluginsConfiguration>
+              <org.jetbrains.dokka.base.DokkaBase>
+                <footerMessage>(c) Fu Cheng @ JavaAIDev.com 2025</footerMessage>
+              </org.jetbrains.dokka.base.DokkaBase>
+            </pluginsConfiguration>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.3.0</version>
+          <executions>
+            <execution>
+              <id>dokka-jar</id>
+              <phase>package</phase>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+              <configuration>
+                <classifier>javadoc</classifier>
+                <classesDirectory>${project.build.directory}/dokka</classesDirectory>
+                <skipIfEmpty>true</skipIfEmpty>
+              </configuration>
             </execution>
           </executions>
         </plugin>
@@ -187,6 +216,10 @@
           <plugin>
             <groupId>org.jetbrains.dokka</groupId>
             <artifactId>dokka-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
