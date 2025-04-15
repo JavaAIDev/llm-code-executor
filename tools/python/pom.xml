@@ -12,12 +12,13 @@
 
 
   <groupId>com.javaaidev.llmcodeexecutor</groupId>
-  <artifactId>tool-java</artifactId>
+  <artifactId>tool-python</artifactId>
   <version>0.2.0</version>
   <packaging>jar</packaging>
 
-  <name>ExecuteJavaCode</name>
-  <description>Execute Java code with following libraries: guava, commons-lang3, jackson, okhttp
+  <name>ExecutePythonCode</name>
+  <description>Execute Python code with following libraries: numpy, pandas, seaborn, tabulate,
+    sympy
   </description>
 
   <properties>
@@ -39,7 +40,7 @@
     </dependency>
     <dependency>
       <groupId>com.javaaidev.llmcodeexecutor</groupId>
-      <artifactId>executor-java</artifactId>
+      <artifactId>executor-python</artifactId>
       <version>0.2.0</version>
     </dependency>
   </dependencies>

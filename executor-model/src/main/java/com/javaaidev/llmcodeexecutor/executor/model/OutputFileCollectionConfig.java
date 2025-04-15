@@ -10,17 +10,17 @@ package com.javaaidev.llmcodeexecutor.executor.model;
 public class OutputFileCollectionConfig {
 
     /**
-     * Should output files be loaded as string
+     * Should output files created in the container be loaded as string
      * 
      */
     private Boolean loadFiles;
     /**
-     * Should output files be copied to a directory
+     * Should output files created in the container be copied to a directory
      * 
      */
     private Boolean copyFiles;
     /**
-     * Directory to copy output files
+     * Target directory of the host machine to copy output files
      * 
      */
     private String copiedFilesPath;
@@ -42,11 +42,11 @@ public class OutputFileCollectionConfig {
      * @param includedFilePattern
      *     Glob patterns to include files for loading or copying.
      * @param copyFiles
-     *     Should output files be copied to a directory.
+     *     Should output files created in the container be copied to a directory.
      * @param copiedFilesPath
-     *     Directory to copy output files.
+     *     Target directory of the host machine to copy output files.
      * @param loadFiles
-     *     Should output files be loaded as string.
+     *     Should output files created in the container be loaded as string.
      */
     public OutputFileCollectionConfig(Boolean loadFiles, Boolean copyFiles, String copiedFilesPath, String includedFilePattern) {
         super();
@@ -61,7 +61,7 @@ public class OutputFileCollectionConfig {
     }
 
     /**
-     * Should output files be loaded as string
+     * Should output files created in the container be loaded as string
      * 
      */
     public Boolean getLoadFiles() {
@@ -69,7 +69,7 @@ public class OutputFileCollectionConfig {
     }
 
     /**
-     * Should output files be loaded as string
+     * Should output files created in the container be loaded as string
      * 
      */
     public void setLoadFiles(Boolean loadFiles) {
@@ -77,7 +77,7 @@ public class OutputFileCollectionConfig {
     }
 
     /**
-     * Should output files be copied to a directory
+     * Should output files created in the container be copied to a directory
      * 
      */
     public Boolean getCopyFiles() {
@@ -85,7 +85,7 @@ public class OutputFileCollectionConfig {
     }
 
     /**
-     * Should output files be copied to a directory
+     * Should output files created in the container be copied to a directory
      * 
      */
     public void setCopyFiles(Boolean copyFiles) {
@@ -93,7 +93,7 @@ public class OutputFileCollectionConfig {
     }
 
     /**
-     * Directory to copy output files
+     * Target directory of the host machine to copy output files
      * 
      */
     public String getCopiedFilesPath() {
@@ -101,7 +101,7 @@ public class OutputFileCollectionConfig {
     }
 
     /**
-     * Directory to copy output files
+     * Target directory of the host machine to copy output files
      * 
      */
     public void setCopiedFilesPath(String copiedFilesPath) {

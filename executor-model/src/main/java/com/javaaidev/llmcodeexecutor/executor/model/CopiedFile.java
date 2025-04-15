@@ -5,7 +5,7 @@ package com.javaaidev.llmcodeexecutor.executor.model;
 public class CopiedFile {
 
     /**
-     * Path of a copied file
+     * Path of a copied file in the host machine
      * 
      */
     private String path;
@@ -20,7 +20,7 @@ public class CopiedFile {
     /**
      * 
      * @param path
-     *     Path of a copied file.
+     *     Path of a copied file in the host machine.
      */
     public CopiedFile(String path) {
         super();
@@ -32,7 +32,7 @@ public class CopiedFile {
     }
 
     /**
-     * Path of a copied file
+     * Path of a copied file in the host machine
      * 
      */
     public String getPath() {
@@ -40,7 +40,7 @@ public class CopiedFile {
     }
 
     /**
-     * Path of a copied file
+     * Path of a copied file in the host machine
      * 
      */
     public void setPath(String path) {

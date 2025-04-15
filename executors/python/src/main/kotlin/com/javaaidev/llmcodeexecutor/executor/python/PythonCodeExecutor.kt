@@ -16,7 +16,7 @@ class PythonCodeExecutor(private val config: ExecuteCodeConfiguration? = null) {
         request: ExecuteCodeParameters
     ): ExecuteCodeReturnType {
         val codeDir = Files.createTempDirectory("code_executor")
-        val codeFile = "app.py"
+        val codeFile = (request.codeFileName ?: "").ifBlank { "app.py" }
         Files.writeString(codeDir.resolve(codeFile), request.code)
         val codeExecutor = LLMCodeExecutor(
             CodeExecutorConfig(

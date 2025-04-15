@@ -16,5 +16,6 @@
 
   <modules>
     <module>java</module>
+    <module>python</module>
   </modules>
 </project>

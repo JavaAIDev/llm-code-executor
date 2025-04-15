@@ -20,7 +20,7 @@ public abstract class AbstractExecuteCode implements Tool<ExecuteCodeParameters,
 
     @Override
     public String getName() {
-        return "ExecuteCode";
+        return "ExecuteJavaCode";
     }
 
     @Override

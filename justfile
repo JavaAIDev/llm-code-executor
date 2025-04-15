@@ -14,7 +14,7 @@ generateJavaContainerImages: build
           profiles/java/base-21.json --output=container-images/java/base-21
 
 downloadCodeGeneratorCli:
-    mvn dependency:copy -Dartifact=com.javaaidev.easyllmtools:code-generator-cli:0.1.8 -DoutputDirectory=target -Dmdep.stripVersion=true
+    mvn dependency:copy -Dartifact=com.javaaidev.easyllmtools:code-generator-cli:0.1.9 -DoutputDirectory=target -Dmdep.stripVersion=true
 
 generateCodeExecutorModel: downloadCodeGeneratorCli
     java -jar target/code-generator-cli.jar simple \
@@ -40,5 +40,22 @@ generateCodeExecutorJava: downloadCodeGeneratorCli
       --artifact-id=tool-java --artifact-version=0.2.0 \
       --model-package-name=com.javaaidev.llmcodeexecutor.executor.model \
       --package-name=com.javaaidev.llmcodeexecutor.executor.java \
-      --tool-description="Execute Java code with following libraries: guava, commons-lang3, jackson, okhttp" \
+      --llm-tool-name="ExecuteJavaCode" \
+      --tool-description="Execute Java code with following libraries: guava, commons-lang3, jackson, okhttp. Code is executed in a container. Always write files to the current directory." \
+      llm-tool-spec/code-executor.json
+
+generateCodeExecutorPython: downloadCodeGeneratorCli
+    java -jar target/code-generator-cli.jar simple \
+      --output=tools/python \
+      --no-model-files \
+      --tool-id-prefix=python \
+      --parent-group-id=com.javaaidev.llmcodeexecutor \
+      --parent-artifact-id=tools \
+      --parent-artifact-version=0.2.0 \
+      --group-id=com.javaaidev.llmcodeexecutor \
+      --artifact-id=tool-python --artifact-version=0.2.0 \
+      --model-package-name=com.javaaidev.llmcodeexecutor.executor.model \
+      --package-name=com.javaaidev.llmcodeexecutor.executor.python \
+      --llm-tool-name="ExecutePythonCode" \
+      --tool-description="Execute Python code with following libraries: numpy, pandas, seaborn, tabulate, sympy. Code is executed in a container. Always write files to the current directory." \
       llm-tool-spec/code-executor.json
