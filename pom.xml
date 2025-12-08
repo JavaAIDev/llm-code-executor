@@ -8,7 +8,7 @@
   <artifactId>llm-code-executor</artifactId>
   <name>LLM Code Executor</name>
   <description>Execute code for LLM</description>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <packaging>pom</packaging>
 
   <url>https://github.com/JavaAIDev/llm-code-executor</url>
@@ -18,6 +18,11 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
+  <organization>
+    <name>JavaAIDev.com</name>
+    <url>https://javaaidev.com</url>
+  </organization>
+  <inceptionYear>2025</inceptionYear>
 
   <developers>
     <developer>
