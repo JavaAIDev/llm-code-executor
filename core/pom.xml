@@ -17,6 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <kotlin.code.style>official</kotlin.code.style>
     <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+    <docker-java.version>3.7.0</docker-java.version>
   </properties>
 
   <build>
@@ -36,24 +37,19 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.javaaidev.llmcodeexecutor</groupId>
-      <artifactId>code-executor-model</artifactId>
-      <version>0.3.0</version>
-    </dependency>
-    <dependency>
       <groupId>com.github.docker-java</groupId>
       <artifactId>docker-java-core</artifactId>
-      <version>3.4.2</version>
+      <version>${docker-java.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.docker-java</groupId>
       <artifactId>docker-java-transport-httpclient5</artifactId>
-      <version>3.4.2</version>
+      <version>${docker-java.version}</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.5.16</version>
+      <version>1.5.21</version>
     </dependency>
   </dependencies>
 

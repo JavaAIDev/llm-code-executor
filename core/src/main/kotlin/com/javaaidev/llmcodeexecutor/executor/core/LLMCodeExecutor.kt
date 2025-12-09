@@ -7,10 +7,6 @@ import com.github.dockerjava.core.DefaultDockerClientConfig
 import com.github.dockerjava.core.DockerClientConfig
 import com.github.dockerjava.core.DockerClientImpl
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient
-import com.javaaidev.llmcodeexecutor.executor.model.CopiedFile
-import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeParameters
-import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeReturnType
-import com.javaaidev.llmcodeexecutor.executor.model.LoadedFile
 import org.slf4j.LoggerFactory
 import java.io.Closeable
 import java.nio.file.Files
@@ -38,12 +34,13 @@ data class CodeExecutorConfig(
     val containerOutputDirectory: String? = null,
 )
 
-fun ExecuteCodeParameters.withDefaultIncludedFilePattern(includedFilePattern: String?) {
+fun ExecuteCodeParameters.withDefaultIncludedFilePattern(includedFilePattern: String?): ExecuteCodeParameters {
     this.outputFileCollectionConfig?.let { config ->
         if (config.includedFilePattern == null) {
             config.includedFilePattern = includedFilePattern
         }
     }
+    return this
 }
 
 
@@ -70,7 +67,7 @@ class LLMCodeExecutor(
         logger.info("Use docker client connecting to {}", dockerClientConfig.dockerHost)
     }
 
-    fun execute(request: ExecuteCodeParameters): ExecuteCodeReturnType {
+    fun execute(request: ExecuteCodeParameters): ExecuteCodeResult {
         logger.info("Starting to run code: {}", request)
         pullImage()
         val cmd = dockerClient.createContainerCmd(config.containerImage)
@@ -190,7 +187,7 @@ class LLMCodeExecutor(
 
         dockerClient.removeContainerCmd(containerId).exec()
         logger.info("Container removed {}", containerId)
-        return ExecuteCodeReturnType(
+        return ExecuteCodeResult(
             outputBuilder.toString(),
             errorBuilder.toString(),
             loadedFiles,

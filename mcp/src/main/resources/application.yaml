@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: code-executor
+  threading:
+    virtual:
+      enabled: true
+  main:
+    web-application-type: NONE
+    banner-mode: off
+  ai:
+    mcp:
+      server:
+        stdio: true
+        name: code-executor
+        type: SYNC
+        capabilities:
+          prompt: false
+          completion: false

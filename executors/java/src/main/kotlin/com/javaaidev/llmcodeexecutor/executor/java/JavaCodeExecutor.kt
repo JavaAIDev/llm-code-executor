@@ -1,20 +1,14 @@
 package com.javaaidev.llmcodeexecutor.executor.java
 
-import com.javaaidev.llmcodeexecutor.executor.core.CodeExecutorConfig
-import com.javaaidev.llmcodeexecutor.executor.core.LLMCodeExecutor
-import com.javaaidev.llmcodeexecutor.executor.core.VolumeBind
-import com.javaaidev.llmcodeexecutor.executor.core.withDefaultIncludedFilePattern
-import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeConfiguration
-import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeParameters
-import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeReturnType
+import com.javaaidev.llmcodeexecutor.executor.core.*
 import java.nio.file.Files
 import java.time.Duration
 
-class JavaCodeExecutor(private val config: ExecuteCodeConfiguration? = null) {
+class JavaCodeExecutor(private val config: CodeExecutionConfig? = null) : CodeExecutor {
 
-    fun execute(
+    override fun execute(
         request: ExecuteCodeParameters
-    ): ExecuteCodeReturnType {
+    ): ExecuteCodeResult {
         val codeDir = Files.createTempDirectory("code_executor")
         val codeFile = (request.codeFileName ?: "").ifBlank { "Main.java" }
         val mainClass = codeFile.removeSuffix(".java")
@@ -41,7 +35,6 @@ class JavaCodeExecutor(private val config: ExecuteCodeConfiguration? = null) {
                 "/app",
             )
         )
-        request.withDefaultIncludedFilePattern("!${codeFile}")
-        return codeExecutor.execute(request)
+        return codeExecutor.execute(request.withDefaultIncludedFilePattern("!${codeFile}"))
     }
 }

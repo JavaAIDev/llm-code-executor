@@ -1,6 +1,6 @@
 package com.javaaidev.llmcodeexecutor.executor.java
 
-import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeParameters
+import com.javaaidev.llmcodeexecutor.executor.core.ExecuteCodeParameters
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -19,7 +19,7 @@ class JavaCodeExecutorTest {
     """.trimIndent()
             )
         )
-        assertEquals("Hello", result.output.trim())
+        assertEquals("Hello", result.output?.trim())
     }
 
     @Test

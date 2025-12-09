@@ -1,7 +1,7 @@
 package com.javaaidev.llmcodeexecutor.executor.python
 
-import com.javaaidev.llmcodeexecutor.executor.model.ExecuteCodeParameters
-import com.javaaidev.llmcodeexecutor.executor.model.OutputFileCollectionConfig
+import com.javaaidev.llmcodeexecutor.executor.core.ExecuteCodeParameters
+import com.javaaidev.llmcodeexecutor.executor.core.OutputFileCollectionConfig
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -15,7 +15,7 @@ class PythonCodeExecutorTest {
     """.trimIndent()
             )
         )
-        assertEquals("Hello", result.output.trim())
+        assertEquals("Hello", result.output?.trim())
     }
 
     @Test
