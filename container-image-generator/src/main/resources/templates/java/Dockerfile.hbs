@@ -8,6 +8,9 @@ WORKDIR /app
 RUN mvn compile exec:java
 
 FROM maven:3.9.9-eclipse-temurin-{{javaVersion}}
+
+LABEL "com.javaaidev.llm-code-executor.description"="{{description}}"
+
 COPY --from=build /root/.m2 /root/.m2
 
 WORKDIR /app

@@ -3,10 +3,10 @@ name = "llm-code-executor"
 version = "0.2.0"
 requires-python = ">=3.12"
 dependencies = [
-    "numpy",
-    "pandas",
-    "seaborn",
-    "tabulate",
-    "sympy"
+"numpy",
+"pandas",
+"seaborn",
+"tabulate",
+"sympy"
 
 ]
